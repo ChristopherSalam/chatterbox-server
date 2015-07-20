@@ -1,0 +1,19 @@
+{
+  "name": "bowerComponents",
+  "version": "0.0.0",
+  "homepage": "https://github.com/jdlawrence/2015-06-chatterbox-server",
+  "authors": [
+    "TGA-Student <tga.student@hackreactor.com>"
+  ],
+  "description": "holds our bower components",
+  "main": "bower.json",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "client/bower_components",
+    "test",
+    "tests"
+  ]
+}
