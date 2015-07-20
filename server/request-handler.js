@@ -27,7 +27,8 @@ exports.requestHandler = function(request, response) {
   // Adding more logging to your server can be an easy way to get passive
   // debugging help, but you should always be careful about leaving stray
   // console.logs in your code.
-  // console.log("Serving request type " + request.method + " for url " + request.url);
+  console.log("Serving request type " + request.method + " for url " + request.url);
+
   // console.log("response", response);
 
   // The outgoing status.
@@ -45,12 +46,27 @@ exports.requestHandler = function(request, response) {
   // .writeHead() writes to the request line and headers of the response,
   // which includes the status and all headers.
   response.writeHead(statusCode, headers);
-  response._data = {data:"real"}
+  // response._data = {data:"real"}
   // Make sure to always call response.end() - Node may not send
   // anything back to the client until you do. The string you pass to
   // response.end() will be the body of the response - i.e. what shows
   // up in the browser.
   //
+
+  // var endText;
+
+  // if (request.method === "GET") { 
+  //   endText = {
+  //     "one" : "two"
+  //   }
+  // }
+  
+  // else if (request.method === "POST") { 
+  //   endText = {
+  //     "three" : "four"
+  //   }
+  // }
+
   // Calling .end "flushes" the response's internal buffer, forcing
   // node to actually send all the data over to the client.
 
@@ -61,7 +77,7 @@ exports.requestHandler = function(request, response) {
   // }
 
 
-  response.end("Hello, world");
+  response.end('{ "Hello": "World" }');
 };
 
 // These headers will allow Cross-Origin Resource Sharing (CORS).
