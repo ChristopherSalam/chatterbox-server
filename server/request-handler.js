@@ -1,3 +1,5 @@
+var qs = require('querystring'); /// for query.parse function
+
 /*************************************************************
 
 You should implement your request handler function in this file.
@@ -48,25 +50,42 @@ module.exports = function(request, response) {
   // response.end() will be the body of the response - i.e. what shows
   // up in the browser.
   //
-    console.log('request', request);
+
+  // var dataObject = JSON.parse(request);
+
+  responseData = {"results": []};
+  var fullBody = '';
+
   if (request.method === "GET") { 
     statusCode = 200;
-    // responseData = JSON.stringify(data);
-
-    responseData = {"results": []};
     responseData = JSON.stringify(responseData);
+    response.writeHead(statusCode, headers);
+    response.end(responseData);
+
   } 
   else if (request.method === "POST") { 
     statusCode = 201;  
-    responseData = JSON.stringify(request.json);
-    // response.write(dataStringified)
+
+    console.log('in the post request');
+
+    request.on('data', function(chunk){
+      console.log('data is happening');
+      fullBody += chunk;
+    });    
+
+    request.on('end', function() {
+      console.log('end is happening');
+      response.writeHead(statusCode, headers);
+      var decodedBody = JSON.parse(fullBody);
+      console.log('decodedBody', decodedBody);
+      response.end(decodedBody);
+    });
   }
-  // console.log('statusCodeeeeeeeeeeeee', statusCode);
-  response.writeHead(statusCode, headers);
+  // response.writeHead(statusCode, headers);
 
   // Calling .end "flushes" the response's internal buffer, forcing
   // node to actually send all the data over to the client.
-  response.end(responseData);
+  // response.end(responseData);
 };
 
 // These headers will allow Cross-Origin Resource Sharing (CORS).
