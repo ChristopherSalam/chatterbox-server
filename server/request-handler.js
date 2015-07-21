@@ -27,12 +27,12 @@ exports.requestHandler = function(request, response) {
   // Adding more logging to your server can be an easy way to get passive
   // debugging help, but you should always be careful about leaving stray
   // console.logs in your code.
-  console.log("Serving request type " + request.method + " for url " + request.url);
+  // console.log("Serving request type " + request.method + " for url " + request.url);
 
-  // console.log("response", response);
+  // console.log("request", request);
 
   // The outgoing status.
-  var statusCode = 200;
+  var statusCode = 404;
 
   // See the note below about CORS headers.
   var headers = exports.defaultCorsHeaders;
@@ -45,7 +45,6 @@ exports.requestHandler = function(request, response) {
 
   // .writeHead() writes to the request line and headers of the response,
   // which includes the status and all headers.
-  response.writeHead(statusCode, headers);
   // response._data = {data:"real"}
   // Make sure to always call response.end() - Node may not send
   // anything back to the client until you do. The string you pass to
@@ -54,30 +53,31 @@ exports.requestHandler = function(request, response) {
   //
 
   // var endText;
-
-  // if (request.method === "GET") { 
-  //   endText = {
-  //     "one" : "two"
-  //   }
-  // }
-  
-  // else if (request.method === "POST") { 
-  //   endText = {
-  //     "three" : "four"
-  //   }
-  // }
+  var data = {};
+  data.results = data.results || [];
+  if (request.method === "GET") { 
+    statusCode = 200;
+    var data = JSON.stringify(data);
+  } 
+  else if (request.method === "POST") { 
+    data.results.push({ 
+      "username": request._postdata.username,
+      "message": request._postdata.message
+    });
+    statusCode = 201;  
+  }
+  response.writeHead(statusCode, headers);
 
   // Calling .end "flushes" the response's internal buffer, forcing
   // node to actually send all the data over to the client.
-
-  var json = {};
   //   username: response.results.username,
   //   roomname: response.results.roomname,
   //   text: response.results.text
   // }
 
 
-  response.end('{ "Hello": "World" }');
+  // response.end('{ "results": [] }');
+  response.end(data);
 };
 
 // These headers will allow Cross-Origin Resource Sharing (CORS).
