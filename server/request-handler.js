@@ -52,28 +52,30 @@ module.exports = function(request, response) {
     response.writeHead(statusCode, headers);
     response.end(JSON.stringify(data));
   }
-
+  function collectData(response, callback) {
+    var fullBody = '';
+    request.on('data', function(chunk){
+      fullBody += chunk;
+    }); 
+    request.on('end',  function(){
+      callback(JSON.parse(fullBody));
+    });
+  }
   if (request.method === "GET") {
     // hasRequestMethod = true;
     var messagesObject = {
-      "results": messages
+      results: messages
     };
-    console.log('messagesObject', messagesObject);
     send(response, messagesObject);
   } 
   else if (request.method === "POST") {  
     // hasRequestMethod = true;
-    request.on('data', function(chunk){
-      fullBody += chunk;
-      console.log('fullBody', fullBody);
-    });    
-
-    request.on('end', function(fullBody) {
-      console.log('fullBody', fullBody);
-      messages.push(JSON.parse(fullBody));
-      console.log("messages",messages);
-      send(response, responseData, 201);
+    collectData(response, function(message){
+      console.log('message before', messages);
+      messages.push(message);
+      send(response, 'confirm', 201)
     });
+    console.log('messages after', messages);
   }
   // if (!hasRequestMethod) {
   //   statusCode = 404;
