@@ -4,15 +4,7 @@
     <meta charset="utf-8">
     <title>chatterbox</title>
     <link rel="stylesheet" href="styles/styles.css">
-
-    <!-- dependencies -->
-    <script src="bower_components/jquery/jquery.min.js"></script>
-    <!-- START SOLUTION -->
-    <script src="bower_components/underscore/underscore-min.js"></script>
-    <script src="bower_components/backbone/backbone.js"></script>
-    <!-- END SOLUTION -->
-    <!-- your scripts -->
-    <script src="env/config.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="scripts/app.js"></script>
   </head>
   <body>
@@ -38,19 +30,11 @@
       </form>
       <div id="chats"></div>
       <script>
-        // fully-featured solution: 
+        // fully-featured solution:
         // $(app.init.bind(app));
         // simplified solution:
-        // $(function() {
-        //   app.init();
-        // });
-        // Bakbone implementation: 
         $(function() {
-          var messages = new Messages();
-          messages.loadMsgs();
-          var formView = new FormView({el: $('#main'), collection: messages});
-          var messagesView = new MessagesView({collection:messages});
-          setInterval( messages.loadMsgs.bind(messages), 1000);
+          app.init();
         });
       </script>
       <!-- END SOLUTION -->
